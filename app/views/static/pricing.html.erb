@@ -1,0 +1,38 @@
+<div class="max-w-xl mx-auto p-8 rounded-xl shadow-xl mt-6">
+  
+  
+  <div class="grid grid-cols-2 gap-6">
+  <% if user_signed_in? && !current_user.subscribed? %>
+  <% if current_user.country=="US" %>
+  <%= form_tag purchase_checkouts_path, method: :post, data: { turbo: false } do %>
+    <input type="hidden" name="price_id" value="<%= Rails.application.credentials.dig(:stripe, :pricing, :perday_usa)%>" />
+    <input type="submit" value="Subscribe for $10/day" class="px-3 py-4 bg-teal-600 hover:bg-teal-700 block no-underline w-full text-center rounded font-bold text-white shadow-sm cursor-pointer" />
+  <% end %>
+  <%= form_tag purchase_checkouts_path, method: :post, data: { turbo: false } do %>
+    <input type="hidden" name="price_id" value="<%= Rails.application.credentials.dig(:stripe, :pricing, :monthly_usa)%>" />
+    <input type="submit" value="Subscribe for $9/monthly" class="px-3 py-4 bg-teal-600 hover:bg-teal-700 block no-underline w-full text-center rounded font-bold text-white shadow-sm cursor-pointer" />
+  <% end %>
+  <%end%>
+  <% if current_user.country=="India" %>
+  <%= form_tag purchase_checkouts_path, method: :post, data: { turbo: false } do %>
+    <input type="hidden" name="price_id" value="<%= Rails.application.credentials.dig(:stripe, :pricing, :perday_inr)%>" />
+    <input type="submit" value="Subscribe for 100 Rs/day" class="px-3 py-4 bg-teal-600 hover:bg-teal-700 block no-underline w-full text-center rounded font-bold text-white shadow-sm cursor-pointer" />
+  <% end %>
+  <%= form_tag purchase_checkouts_path, method: :post, data: { turbo: false } do %>
+    <input type="hidden" name="price_id" value="<%= Rails.application.credentials.dig(:stripe, :pricing, :monthly_inr)%>" />
+    <input type="submit" value="Subscribe for 900 Rs/monthly" class="px-3 py-4 bg-teal-600 hover:bg-teal-700 block no-underline w-full text-center rounded font-bold text-white shadow-sm cursor-pointer" />
+  <% end %>
+  <%end%>
+  <% elsif user_signed_in? && current_user.subscribed? %>
+  <div
+    class="bg-yellow-100 p-6 rounded-lg text-center text-yellow-900 col-span-2"
+  >
+    <p>
+      You're already subscribed. <%= button_to "Manage your subscription",
+      billings_path, data: { turbo: false }, class: "underline" %>.
+    </p>
+  </div>
+  <% end %>
+</div>
+
+</div>

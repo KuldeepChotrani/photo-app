@@ -1,0 +1,45 @@
+
+<!---<ul>
+<% @pricing.data.each do |pricing| %>
+  <%if pricing.currency != 'inr'%>
+      <p><%= pricing%></p>
+      
+  <%end%>
+<% end %>
+</ul>--->
+<div class="max-w-xl mx-auto p-8 rounded-xl shadow-xl mt-6">
+
+
+<div class="grid grid-cols-2 gap-6">
+<% if user_signed_in? && !current_user.subscribed? %>
+  <% @pricing.data.each do |pricing| %>
+    <% if current_user.country=="US" %>
+      <%if pricing.currency == 'usd' && pricing.active == true%>
+        <%= form_tag purchase_checkouts_path, method: :post, data: { turbo: false } do %>
+          <input type="hidden" name="price_id" value="<%= pricing.id%>" />
+          <input type="submit" value="Subscribe for $<%= Stripe::Price.retrieve(pricing.id)&.unit_amount/100 %> for <%= pricing.recurring.interval_count%> <%= pricing.recurring.interval%>" class="px-3 py-4 bg-teal-600 hover:bg-teal-700 block no-underline w-full text-center rounded font-bold text-white shadow-sm cursor-pointer" />
+        <% end %>
+      <% end %>   
+    <%end%>
+    <% if current_user.country=="India" %>
+      <%if pricing.currency == 'inr' && pricing.active == true%>
+        <%= form_tag purchase_checkouts_path, method: :post, data: { turbo: false } do %>
+          <input type="hidden" name="price_id" value="<%= pricing.id%>" />
+          <input type="submit" value="Subscribe for Rs.<%= Stripe::Price.retrieve(pricing.id)&.unit_amount/100 %> for <%= pricing.recurring.interval_count%> <%= pricing.recurring.interval%>" class="px-3 py-4 bg-teal-600 hover:bg-teal-700 block no-underline w-full text-center rounded font-bold text-white shadow-sm cursor-pointer" />
+        <% end %>
+        <% end %>
+      <% end %>   
+    <%end%>
+<% elsif user_signed_in? && current_user.subscribed? %>
+<div
+  class="bg-yellow-100 p-6 rounded-lg text-center text-yellow-900 col-span-2"
+>
+  <p>
+    You're already subscribed. <%= button_to "Manage your subscription",
+    billings_path, data: { turbo: false }, class: "underline" %>.
+  </p>
+</div>
+<% end %>
+</div>
+
+</div>

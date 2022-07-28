@@ -6,9 +6,17 @@ ruby "3.1.2"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.3"
 
+gem 'devise'
+
+gem 'twitter-bootstrap-rails'
+
+gem 'devise-bootstrap-views'
+
+gem 'bootstrap-sass'
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
-
+gem 'stripe'
 
 
 # Use the Puma web server [https://github.com/puma/puma]
@@ -75,3 +83,4 @@ group :production do
   gem 'pg'
   gem 'rails_12factor'
 end
+gem "sidekiq", "~> 6.3", ">= 6.3.1"
