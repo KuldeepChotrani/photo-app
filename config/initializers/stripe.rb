@@ -6,4 +6,4 @@ Rails.configuration.stripe = {
 
 }
 
-Stripe.api_key = Rails.configuration.stripe[:secret_key]
+Stripe.api_key = ENV['api_key']

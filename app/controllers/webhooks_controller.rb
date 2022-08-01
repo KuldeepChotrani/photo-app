@@ -5,7 +5,6 @@ class WebhooksController < ApplicationController
       signature_header = request.env['HTTP_STRIPE_SIGNATURE']
       endpoint_secret = Rails.application.credentials.dig(:stripe, :webhook_signing_secret)
       event = nil
-      puts "hello world this is the app"
       begin
         event = Stripe::Webhook.construct_event(
           payload, signature_header, endpoint_secret
@@ -42,6 +41,7 @@ class WebhooksController < ApplicationController
           interval: stripe_subscription.plan.interval,
           status: stripe_subscription.status
         )
+        Stripe::Invoice.send_invoice('id')
       when 'invoice.payment_failed'
         # The payment failed or the payment is not valid
         # The subscription becomes past_due.
