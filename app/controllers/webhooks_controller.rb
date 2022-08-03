@@ -3,7 +3,7 @@ class WebhooksController < ApplicationController
     def create
       payload = request.body.read
       signature_header = request.env['HTTP_STRIPE_SIGNATURE']
-      endpoint_secret = Rails.application.credentials.dig(:stripe, :webhook_signing_secret)
+      endpoint_secret = ENV['webhook_signing']
       event = nil
       begin
         event = Stripe::Webhook.construct_event(
